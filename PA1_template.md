@@ -12,7 +12,7 @@ if (!file.exists("./downloads/project.zip")){download.file(fileUrl, destfile="./
 if (!file.exists("./downloads/activity.csv")){unzip(zipfile="./downloads/project.zip", exdir="./downloads/")}
 ```
 
-### 1-Code for reading in the dataset and/or processing the data
+### Loading and preprocessing the data
 
 ```r
 raw_data <- read.csv(file="./downloads/activity.csv")
@@ -31,7 +31,7 @@ Remove NA
 activity <- na.omit(activity)
 ```
 
-### 2-Histogram of the total number of steps taken each day
+### What is mean total number of steps taken per day?
 Aggregate the total number of steps for each day
 
 ```r
@@ -46,7 +46,6 @@ hist(steps_by_day$steps, col = "blue", xlab = "Total Number of Steps", ylab = "F
 
 ![](PA1_template_files/figure-html/histogram1-1.png)<!-- -->
 
-### 3-Mean and median number of steps taken each day
 Change steps column to numeric
 
 ```r
@@ -75,7 +74,7 @@ paste("The Median of Total Number of Steps Taken per Day is", median_steps)
 ## [1] "The Median of Total Number of Steps Taken per Day is 10765"
 ```
 
-### 4-Time series plot of the average number of steps taken
+### What is the average daily activity pattern?
 
 ```r
 steps_by_interval <- aggregate(steps ~ interval, activity, mean)
@@ -83,7 +82,7 @@ plot(steps_by_interval$interval,steps_by_interval$steps, type="l", xlab="Interva
 ```
 
 ![](PA1_template_files/figure-html/plot1-1.png)<!-- -->
-### 5-The 5-minute interval that, on average, contains the maximum number of steps
+
 The 5-minute interval, which contains the maximum number of steps
 
 ```r
@@ -95,7 +94,7 @@ paste("The 5-minute interval, which contains the maximum number of steps is", in
 ## [1] "The 5-minute interval, which contains the maximum number of steps is 835"
 ```
 
-### 6-Code to describe and show a strategy for imputing missing data
+### Imputing missing values
 Display the number of missing values
 
 ```r
@@ -107,7 +106,7 @@ paste("The number of missing values in the dataset is", num_missing_values)
 ## [1] "The number of missing values in the dataset is 2304"
 ```
 
-We can use five minutes interval's mean for the missing values
+**Strategy:** We can use five minutes interval's mean for the missing values
 
 ```r
 missing_values <- is.na(raw_data$steps)
@@ -121,7 +120,7 @@ Total Number of Steps Taken Each Day
 steps_by_day_new <- aggregate(steps ~ date, raw_data, sum)
 ```
 
-### 7-Histogram of the total number of steps taken each day after missing values are imputed
+Histogram of the total number of steps taken each day after missing values are imputed
 
 ```r
 hist(steps_by_day_new$steps, col = "blue", xlab = "Total Number of Steps", ylab = "Frequency", main = "Total Number of Steps Taken Each Day with the new inputs")
@@ -129,6 +128,7 @@ hist(steps_by_day_new$steps, col = "blue", xlab = "Total Number of Steps", ylab 
 
 ![](PA1_template_files/figure-html/histogram2-1.png)<!-- -->
 
+### Are there differences in activity patterns between weekdays and weekends?
 Change steps column to numeric
 
 ```r
@@ -181,7 +181,6 @@ paste("Difference between the old and the new inputted tables steps means is", m
 We can say that the new mean with the inputted data is lower than the previous mean.
 Also the new median with the inputted data is higher than the previous median.
 
-### 8-Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 Create a new dataframe from the row data
 
 ```r
@@ -215,7 +214,7 @@ mean_weekday <- subset(mean_steps_by_daytype, daytype == "weekdays")
 mean_weekend <- subset(mean_steps_by_daytype, daytype == "weekend")
 ```
 
-Panel plot
+Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
 ```r
 par(mfrow=c(2,1))

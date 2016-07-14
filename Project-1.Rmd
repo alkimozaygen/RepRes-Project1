@@ -16,7 +16,6 @@ if (!file.exists("./downloads/project.zip")){download.file(fileUrl, destfile="./
 if (!file.exists("./downloads/activity.csv")){unzip(zipfile="./downloads/project.zip", exdir="./downloads/")}
 ```
 
-
 ### 1-Code for reading in the dataset and/or processing the data
 ```{r reading}
 raw_data <- read.csv(file="./downloads/activity.csv")
